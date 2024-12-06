@@ -16,6 +16,9 @@
     <div class="pt-5">
       <img :src="`${image}`" :height=150 :width=150>
     </div>
+    <v-btn>Modify</v-btn>
+    <v-btn>Delete</v-btn>
+
   </v-card>
 </template>
 
