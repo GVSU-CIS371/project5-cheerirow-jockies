@@ -88,9 +88,6 @@
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { ProductDoc } from "./types/product";
-import { db } from "./main.ts"
-import { collection } from "firebase/firestore";
-import { query, where, getDocs, addDoc } from "firebase/firestore";
 import { useProductStore } from "./stores/ProductStore.ts";
 
 const dialog = ref(false);
@@ -104,8 +101,7 @@ const links = ref([
 ]);
 
 const router = useRouter();
-
-const database = collection(db, "products");
+const store = useProductStore();
 
 const isFormValid = computed(() => {
   return addProduct.value.data.name && addProduct.value.data.image && addProduct.value.data.description && addProduct.value.data.price && addProduct.value.data.rating !== null && addProduct.value.data.stock;
@@ -140,16 +136,9 @@ function resetProduct() {
 }
 
 async function addNewProduct() {
-  const q = query(database, where("name", "==", addProduct.value.data.name));
-  const querySnapshot = await getDocs(q);
 
-  if (!querySnapshot.empty) {
-    alert("A product with this name already exists.");
-    return;
-  }
+  await store.addItem(addProduct.value);
 
-  await addDoc(database, addProduct.value.data);
-  alert("Product added successfully!");
   resetProduct();
   dialog.value = false;
 }

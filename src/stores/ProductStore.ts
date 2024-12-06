@@ -61,5 +61,25 @@ export const useProductStore = defineStore("ProductStore", {
         }
       }
     },
+    async addItem(item: ProductDoc){
+      try{
+        const productsCollection = collection(db, "products");
+        const q = query(productsCollection, where("name", "==", item.data.name));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          alert("A product with this name already exists.");
+          return;
+        }
+        else{
+          await addDoc(productsCollection, item.data);
+          alert("Product added successfully!");
+          this.products.push(item);
+        }
+      }
+      catch (error) {
+        console.error("Error adding item:", error);
+        alert("Failed to add item.");
+      }
+    }
   },
 });
