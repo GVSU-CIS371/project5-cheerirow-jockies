@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { ProductDoc } from "../types/product";
+import { Product, ProductDoc } from "../types/product";
 import { initProducts } from "../data-init";
 import { db } from "../main.ts"
-import { addDoc, collection, deleteDoc, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 
 
 
@@ -80,6 +80,41 @@ export const useProductStore = defineStore("ProductStore", {
         console.error("Error adding item:", error);
         alert("Failed to add item.");
       }
-    }
+    },
+    async updateItem(item: ProductDoc){
+      try{
+        const productsCollection = collection(db, "products");
+        const q = query(productsCollection, where("name", "==", item.data.name));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          alert("Product does not exist.");
+          return;
+        }
+        else{
+          const itemDoc = querySnapshot.docs[0].ref;
+          const itemData = item.data;
+          const updatedData = { ...querySnapshot.docs[0].data() };
+
+          for (const key in itemData) {
+            if (itemData[key as keyof Product] !== undefined && itemData[key as keyof Product] !== null) {
+              updatedData[key] = itemData[key as keyof Product];
+            }
+          }
+
+          await updateDoc(itemDoc, updatedData);
+          alert("Product updated successfully!");
+
+          const docId = querySnapshot.docs[0].id;
+          const index = this.products.findIndex(product => product.id === docId);
+          if (index !== -1) {
+            this.products[index] = { id: docId, data: updatedData as Product };
+          }
+        }
+      }
+      catch (error) {
+        console.error("Error updating item:", error);
+        alert("Failed to update item.");
+      }
+    },
   },
 });
