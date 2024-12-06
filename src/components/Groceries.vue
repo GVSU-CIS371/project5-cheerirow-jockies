@@ -6,9 +6,14 @@
       :key="item.id"
       sm="3"
     >
-      <StoreItem :name="item.data.name" :description="item.data.description"
-        :rating=item.data.rating :price=item.data.price :stock=item.data.stock :image="item.data.image"
-        :category="item.data.category"/>
+      <StoreItem
+        :product="item.data"
+        :description="item.data.description"
+        :image="item.data.image"
+        :price="item.data.price"
+        :rating="item.data.rating"
+        :stock="item.data.stock"
+      />
     </v-col>
   </v-row>
 </v-container>
