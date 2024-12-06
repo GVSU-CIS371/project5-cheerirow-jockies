@@ -91,6 +91,7 @@ import { ProductDoc } from "./types/product";
 import { db } from "./main.ts"
 import { collection } from "firebase/firestore";
 import { query, where, getDocs, addDoc } from "firebase/firestore";
+import { useProductStore } from "./stores/ProductStore.ts";
 
 const dialog = ref(false);
 

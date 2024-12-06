@@ -23,32 +23,13 @@
 
 <script lang="ts" setup>
 import { Product } from '../types/product';
-import { deleteDoc, collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "../main.ts";
+import { useProductStore } from '../stores/ProductStore';
 
 const props = defineProps<{ product: Product, description: string, image: string, price: number, rating: number, stock: number }>();
+const products = useProductStore();
 
-async function deleteItem(itemName: string) {
-  const confirmed = confirm("Are you sure you want to delete this item?");
-  if (confirmed) {
-    try {
-      const productsCollection = collection(db, "products");
-      const q = query(productsCollection, where("name", "==", itemName));
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        const itemDoc = querySnapshot.docs[0].ref;
-        await deleteDoc(itemDoc);
-        alert("Item deleted successfully.");
-      } else {
-        alert("Item not found.");
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error);
-      alert("Failed to delete item.");
-    }
-  }
-}
-
+const deleteItem = (productName: string) => {
+  products.deleteItem(productName);
+};
 
 </script>
