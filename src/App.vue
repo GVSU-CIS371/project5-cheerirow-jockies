@@ -26,26 +26,26 @@
               label="Name"
               v-model="addProduct.data.name"
               clearable
-              :rules="[v => !!v || 'Name is required']">
+              :rules="[(v: string) => !!v || 'Name is required']">
             </v-text-field>
             <v-text-field
               label="Image URL"
               v-model="addProduct.data.image"
               clearable
-              :rules="[v => !!v || 'Image URL is required']">
+              :rules="[(v: string) => !!v || 'Image URL is required']">
             </v-text-field>
             <v-text-field
               label="Description"
               v-model="addProduct.data.description"
               clearable
-              :rules="[v => !!v || 'Description is required']">
+              :rules="[(v: string) => !!v || 'Description is required']">
             </v-text-field>
             <v-text-field
               label="Price $"
               type="number"
               v-model="addProduct.data.price"
               clearable
-              :rules="[v => !!v || 'Price is required']">
+              :rules="[(v: string) => !!v || 'Price is required']">
             </v-text-field>
             <v-slider
               :max="5"
@@ -55,14 +55,14 @@
               label="Rating"
               v-model="addProduct.data.rating"
               clearable
-              :rules="[v => v !== null || 'Rating is required']">
+              :rules="[(v: string) => v !== null || 'Rating is required']">
             </v-slider>
             <v-text-field
               label="Stock"
               type="number"
               v-model="addProduct.data.stock"
               clearable
-              :rules="[v => !!v || 'Stock is required']">
+                :rules="[(v: string) => !!v || 'Stock is required']">
             </v-text-field>
             <v-btn :disabled="!isFormValid" text="Add" @click="addNewProduct()"></v-btn>
           </v-form>
